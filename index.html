@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Retour d'expérience, ARTE API</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=792, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen.css">
+	<link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="list">
+	<header class="caption">
+		<h1>Retour d'expérience, ARTE API</h1>
+		<p>PHP Tour Luxembourg - Lenclos Thibault - 2015</p>
+	</header>
+	<section class="slide cover" id="coverpage"><div>
+		<img src="pictures/cover-luxembourg.jpg" />
+		<div class="covertitle">
+			<h2>Retour d'expérience, ARTE API</h2>
+			<p>PHP Tour Luxembourg - Thibault Lenclos - <span class="date">2014</span></p>
+		</div>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Je suis</h2>
+		<div>
+			<img src="pictures/twitter1.png" style="height: 17em;" />
+			<img src="pictures/meme.jpg" style="height: 13em;" />
+		</div>
+	</div></section>
+	<section class="slide"><div>
+		<h2>En vrai : Thibault Lenclos - @thibz</h2>
+		<p>Dév web et mobile @jolicode<br />
+
+			PHP (Symfony 2), JS full stack (node, meteor), mobile (titanium)<br />
+
+			Rock & code<br />
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Sommaire</h2>
+		<ol>
+			<li>Le client : Arte</li>
+			<li>Projet</li>
+			<li>Outils et processus</li>
+			<li>Bilan</li>
+		</ol>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Client Arte</h2>
+		<p>ARTE GEIE, basé à Strasbourg<br />
+
+			Chaine de télévision franco-allemande<br />
+
+			Nombreuses plateformes (TV, web, mobile, HBBTV…)
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Collaborateurs</h2>
+		<p class="nomargin">François Dume (conférence forum PHP) et Matthieu Breen.</p>
+		<img src="pictures/collaborateurs.png" style="height: 17em;" />
+	</div></section>
+	<section class="slide cover"><div>
+		<h2>Projet : API et portail partenaire</h2>
+		<img src="pictures/portail-partenaire-doc.png">
+	</div></section>
+	<section class="slide"><div>
+		<h2>Projet : API et portail partenaire</h2>
+		<p>Nouvelle API Rest, données unifiées<br />
+
+			OAuth 2<br />
+
+			Proxy Nginx + scripts Lua (rate limit et authentification)<br />
+
+			Portail partenaire
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Projet : portail partenaire</h2>
+		<p><img src="pictures/portail-partenaire-app.png" />
+		</p>
+	</div></section>
+	<section class="slide cover"><div>
+		<h2>Organisation</h2>
+		<img src="pictures/TODO.png">
+	</div></section>
+	<section class="slide"><div>
+		<h2>Organisation (1)</h2>
+		<p>Stand-up chaque matin<br/>
+
+			Priorisation des tâches<br/>
+
+			“Fix bug first”<br/>
+
+			Mise en production hebdomadaire<br/>
+
+			Communication chat et VOIP
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Organisation (2)</h2>
+		<p>Github : Pull request et revue de code<br />
+
+			Jira : gestion de tickets<br />
+
+			Bamboo : intégration continue<br />
+
+			Hipchat : chat + notifications diverses (PR, déploiement, fail des tests)<br />
+
+			Digital ocean : création de VM à la volée
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Workflow</h2>
+		<p>Même environnement pour tous :</p>
+		<ul>
+			<li>Vagrant : machine virtuelle</li>
+
+			<li>Ansible : provisionning versionné de la machine</li>
+
+			<li>Packer : accélérer l’arrivée d’un collaborateur sur le projet, la construction de VM de test</li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Architecture</h2>
+		<img src="pictures/architecture-api.png" style="height: 16em;" />
+	</div></section>
+	<section class="slide"><div>
+		<h2>Openresty</h2>
+		<p>Nginx + modules<br />
+
+			Etendre le serveur avec des scripts<br />
+
+			Interagir avec des bases de données (ex: cache redis)<br />
+
+			Sous requêtes
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Scripts LUA</h2>
+		<p>Langage<br />
+
+			Typage dynamique<br />
+
+			Apprentissage rapide<br />
+
+			Interviennent à différents moments de la requête
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Test des scripts LUA</h2>
+		<p class="nomargin">Testable via le package perl Test:Nginx<br />
+
+
+			<pre><code>
+			--- http_config
+			lua_shared_dict cache 10M;
+			--- config
+			location /test-401 {
+			header_filter_by_lua_file /etc/nginx/conf.d/oauth-header-filter.lua;
+			access_by_lua_file /etc/nginx/conf.d/oauth-throttle.lua;
+			}
+			--- request
+			GET /test-401
+			--- error_code: 401</code></pre>
+
+
+			Difficulté de tester unitairement => tests fonctionnels
+
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Standard pour l'API</h2>
+		<p>API : JSON API<br />
+			Documentation : Swagger</p>
+
+		<p>
+			<strong>Autres</strong><br>
+			JSON-LD : schéma et lien<br />
+			Hydra : schéma et documentation directement dans la réponse</p>
+
+			<p>(voir <a href="https://github.com/dunglas/api-platform">https://github.com/dunglas/api-platform</a>)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>REST</h2>
+		<p>Basé sur le standard JSON Api :</p>
+
+			<ul>
+				<li>includes</li>
+				<li>fields</li>
+				<li>links</li>
+			</ul>
+
+			<p>semantic versionning (non défini dans le standard)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Documentation</h2>
+		<img src="pictures/portail-partenaire-doc.png" />
+	</div></section>
+	<section class="slide"><div>
+		<h2>Tests fonctionnels</h2>
+		<p class="nomargin">SF2 (WebTestCase)<br>
+
+		Frisby JS (maintenu par Vance Lucas)</p>
+
+		<pre><code>
+			frisby.create('Check token generation')
+			.get(oauthTokenUrl)
+			.expectStatus(200)
+			.expectHeaderContains('content-type', 'application/json')
+			.afterJSON(function(json) {
+			var accessToken = json.access_token;
+
+			frisby.create('Check invalid token returns a 401')
+			.get(apiBaseUrl + '/api/videps?access_token=invalidToken')
+			.expectStatus(401)
+			.expectMaxResponseTime(maxResponseTimeExpected)
+			.toss();
+			});
+		</code></pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Benchmark performance</h2>
+		<p>Tsung => tests de stress<br>
+
+		JMeter => tests de performance<br>
+
+		Blackfire</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Bundles Symfony2</h2>
+		<p>REST<br>
+			nelmio/api-doc-bundle<br>
+			friendsofsymfony/rest-bundle<br>
+			jms/serializer<br>
+			arte/hateoas-bundle (POC)<br>
+
+			TESTS<br>
+			liip/functional-test-bundle
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Docker</h2>
+		<p>Utilisation d’un makefile pour certaines tâches de développement :</p>
+
+		<ul>
+			<li>mise en production (capistrano)</li>
+			<li>composer</li>
+			<li>phpunit</li>
+		</ul>
+
+		<p>
+			Merci Marmelab !<br>
+			<a href="https://github.com/marmelab/make-docker-command">https://github.com/marmelab/make-docker-command</a>
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Ansible</h2>
+		<p>Description des paquets, fichiers de confs...<br>
+
+			Exécution de tâches<br>
+
+			Ex: relancer nginx avec mise à jour des scripts LUA
+		</p>
+
+		<pre><code>
+			name: write the oauth-throttle.lua file for api-proxy
+			copy: src=oauth-throttle.lua dest=/etc/nginx/conf.d/oauth-throttle.lua backup=no
+			notify:
+			- restart nginx
+			tags:
+			- proxy-api
+			- nginx
+		</code></pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Monitoring</h2>
+		<p>New relic<br>
+
+			Logstash<br>
+			- Gelf pour SF2<br>
+			- Syslog pour Nginx<br>
+
+			[Capture d’écran]
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Clients actuels de l'API</h2>
+		<ul>
+			<li>Arte Concert</li>
+			<li>Arte Future</li>
+			<li>Arte Creative</li>
+			<li>Arte Cinema</li>
+			<li>Applications mobiles Concert/Creative/Future,</li>
+			<li>Applications TV</li>
+			<li>Apple TV</li>
+			<li>Arte concert</li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Open source</h2>
+		<p>Presque !<br>
+			Suppression des données sensibles (TODO rajouter une blague)<br>
+			BFG repo cleaner
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>A venir</h2>
+		<p>SDK pour les partenaires<br>
+
+			Migration des clients utilisant l’ancienne version de l’API (PAPI)<br>
+
+			PHP 7 - Elasticsearch
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Bilan personnel</h2>
+		<p>Premier projet @jolicode<br>
+
+			Très formateur<br>
+
+			Développement proche de l’architecture<br>
+
+			Nouvelles méthodologies
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Bilan projet</h2>
+		<p>Métier connu<br>
+
+			Problématique de performance<br>
+
+			Choix des outils
+		</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Ressources</h2>
+		<p>JSON Api<br>
+
+			Openresty<br>
+
+			Ansible<br>
+
+			ArteGEIE/ArteHateoasBundle<br>
+
+			ArteGEIE/docker-images
+		</p>
+	</div></section>
+	<div class="progress"><div></div></div>
+	<script src="shower/shower.min.js"></script>
+	<!-- Copyright © 2014 Yours Truly, Famous Inc. -->
+	<!-- Photos by John Carey, fiftyfootshadows.net -->
+</body>
+</html>
