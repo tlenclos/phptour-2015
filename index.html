@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=792, user-scalable=no">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen.css">
+	<link rel="stylesheet" href="styles/prism.css" />
 	<link rel="stylesheet" href="styles/custom.css">
 </head>
 <body class="list">
@@ -34,6 +35,8 @@
 			PHP (Symfony 2), JS full stack (node, meteor), mobile (titanium)<br />
 
 			Rock & code<br />
+
+			<img src="pictures/metal.gif" />
 		</p>
 	</div></section>
 	<section class="slide"><div>
@@ -81,7 +84,7 @@
 	</div></section>
 	<section class="slide cover"><div>
 		<h2>Organisation</h2>
-		<img src="pictures/TODO.png">
+		<img src="pictures/aoshima-cat-island-japan.jpg ">
 	</div></section>
 	<section class="slide"><div>
 		<h2>Organisation (1)</h2>
@@ -98,15 +101,19 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Organisation (2)</h2>
-		<p>Github : Pull request et revue de code<br />
 
-			Jira : gestion de tickets<br />
+		<div style="float: right; width: 50%;">
+			<img src="pictures/watching.gif" />
+		</div>
+		<p><strong>Github</strong> : Pull request et revue de code<br />
 
-			Bamboo : intégration continue<br />
+			<strong>Jira</strong> : gestion de tickets<br />
 
-			Hipchat : chat + notifications diverses (PR, déploiement, fail des tests)<br />
+			<strong>Bamboo</strong> : intégration continue<br />
 
-			Digital ocean : création de VM à la volée
+			<strong>Hipchat</strong> : chat + notifications diverses (PR, déploiement, fail des tests)<br />
+
+			<strong>Digital ocean</strong> : création de VM à la volée
 		</p>
 	</div></section>
 	<section class="slide"><div>
@@ -151,17 +158,16 @@
 		<p class="nomargin">Testable via le package perl Test:Nginx<br />
 
 
-			<pre><code>
-			--- http_config
-			lua_shared_dict cache 10M;
-			--- config
-			location /test-401 {
-			header_filter_by_lua_file /etc/nginx/conf.d/oauth-header-filter.lua;
-			access_by_lua_file /etc/nginx/conf.d/oauth-throttle.lua;
-			}
-			--- request
-			GET /test-401
-			--- error_code: 401</code></pre>
+			<pre><code class="language-javascript">	--- http_config
+	lua_shared_dict cache 10M;
+	--- config
+	location /test-401 {
+		header_filter_by_lua_file /etc/nginx/conf.d/oauth-header-filter.lua;
+		access_by_lua_file /etc/nginx/conf.d/oauth-throttle.lua;
+	}
+	--- request
+	GET /test-401
+	--- error_code: 401</code></pre>
 
 
 			Difficulté de tester unitairement => tests fonctionnels
@@ -192,32 +198,41 @@
 
 			<p>semantic versionning (non défini dans le standard)</p>
 	</div></section>
-	<section class="slide"><div>
+	<section class="slide" id="documentation"><div>
 		<h2>Documentation</h2>
 		<img src="pictures/portail-partenaire-doc.png" />
 	</div></section>
-	<section class="slide"><div>
+	<style>
+		#documentation img {
+			max-width: 104%;
+		}
+	</style>
+	<section class="slide" id="tests-fonctionnels"><div>
 		<h2>Tests fonctionnels</h2>
 		<p class="nomargin">SF2 (WebTestCase)<br>
 
 		Frisby JS (maintenu par Vance Lucas)</p>
 
-		<pre><code>
-			frisby.create('Check token generation')
-			.get(oauthTokenUrl)
-			.expectStatus(200)
-			.expectHeaderContains('content-type', 'application/json')
-			.afterJSON(function(json) {
-			var accessToken = json.access_token;
+		<pre><code class="language-javascript">frisby.create('Check token generation')
+.get(oauthTokenUrl)
+.expectStatus(200)
+.expectHeaderContains('content-type', 'application/json')
+.afterJSON(function(json) {
+	var accessToken = json.access_token;
 
-			frisby.create('Check invalid token returns a 401')
-			.get(apiBaseUrl + '/api/videps?access_token=invalidToken')
-			.expectStatus(401)
-			.expectMaxResponseTime(maxResponseTimeExpected)
-			.toss();
-			});
+	frisby.create('Check invalid token returns a 401')
+	.get(apiBaseUrl + '/api/videps?access_token=invalidToken')
+	.expectStatus(401)
+	.expectMaxResponseTime(maxResponseTimeExpected)
+	.toss();
+});
 		</code></pre>
 	</div></section>
+	<style>
+		#tests-fonctionnels pre code {
+			line-height: 24px;
+		}
+	</style>
 	<section class="slide"><div>
 		<h2>Benchmark performance</h2>
 		<p>Tsung => tests de stress<br>
@@ -262,25 +277,19 @@
 			Ex: relancer nginx avec mise à jour des scripts LUA
 		</p>
 
-		<pre><code>
-			name: write the oauth-throttle.lua file for api-proxy
-			copy: src=oauth-throttle.lua dest=/etc/nginx/conf.d/oauth-throttle.lua backup=no
-			notify:
-			- restart nginx
-			tags:
-			- proxy-api
-			- nginx
-		</code></pre>
+		<pre><code class="language-javascript">name: write the oauth-throttle.lua file for api-proxy
+copy: src=oauth-throttle.lua dest=/etc/nginx/conf.d/oauth-throttle.lua backup=no
+notify:
+- restart nginx
+tags:
+- proxy-api
+- nginx</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Monitoring</h2>
-		<p>New relic<br>
+		<p>New relic + logstash (gelf et syslog)<br>
 
-			Logstash<br>
-			- Gelf pour SF2<br>
-			- Syslog pour Nginx<br>
-
-			[Capture d’écran]
+			<img src="pictures/logs.png" />
 		</p>
 	</div></section>
 	<section class="slide"><div>
@@ -299,8 +308,8 @@
 	<section class="slide"><div>
 		<h2>Open source</h2>
 		<p>Presque !<br>
-			Suppression des données sensibles (TODO rajouter une blague)<br>
-			BFG repo cleaner
+			Suppression des données sensibles<br>
+			<a href="https://github.com/rtyley/bfg-repo-cleaner">BFG repo cleaner</a>
 		</p>
 	</div></section>
 	<section class="slide"><div>
@@ -334,19 +343,22 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Ressources</h2>
-		<p>JSON Api<br>
+		<p><a href="http://jsonapi.org/">JSON Api</a><br>
 
-			Openresty<br>
+			<a href="http://openresty.org/">Openresty</a><br>
 
-			Ansible<br>
+			<a href="http://www.ansible.com">Ansible</a><br>
 
-			ArteGEIE/ArteHateoasBundle<br>
+			<a href="https://github.com/ArteGEIE/ArteHateoasBundle">ArteGEIE/ArteHateoasBundle</a><br>
 
-			ArteGEIE/docker-images
+			<a href="https://github.com/ArteGEIE/docker-images">ArteGEIE/docker-images</a>
 		</p>
 	</div></section>
 	<div class="progress"><div></div></div>
 	<script src="shower/shower.min.js"></script>
+	<script src="styles/prism.js"></script>
+	<script src="styles/jquery-2.1.1.min.js"></script>
+	<script src="styles/progress.js"></script>
 	<!-- Copyright © 2014 Yours Truly, Famous Inc. -->
 	<!-- Photos by John Carey, fiftyfootshadows.net -->
 </body>
