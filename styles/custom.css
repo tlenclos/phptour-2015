@@ -136,7 +136,7 @@ blockquote {
     background: url(../pictures/jolicode.svg) left 53% no-repeat;
     bottom: 0;
     color: #888;
-    content: 'Retour d\'expérience, ARTE API';
+    content: 'Retour d\'expérience, ARTE API - 2015';
     font-size: 14px;
     height: 30px;
     left: 40px;
@@ -299,4 +299,8 @@ blockquote {
 }
 .slide p.nomargin {
     margin: 0;
+}
+
+.list .slide footer {
+    display: none;
 }

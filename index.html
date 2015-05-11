@@ -27,6 +27,7 @@
 			<img src="pictures/twitter1.png" style="height: 17em;" />
 			<img src="pictures/meme.jpg" style="height: 13em;" />
 		</div>
+	<footer>Devenu un meme après 4 retweet d’un photomontage douteux</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>En vrai : Thibault Lenclos - @thibz</h2>
@@ -38,6 +39,8 @@
 
 			<img src="pictures/metal.gif" />
 		</p>
+		<footer>Jeune développeur, je risque d’être émerveillé par des choses plutôt courante mais je tiens à les retranscrire dans cette conférence
+			Passionné, j’assimile souvent le développement à la musique, en terme de composition et rigeur.</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Sommaire</h2>
@@ -59,32 +62,43 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Collaborateurs</h2>
-		<p class="nomargin">François Dume (conférence Forum PHP) et Matthieu Breen.</p>
+		<p class="nomargin">François Dume (conférence Forum PHP 2014) et Matthieu Breen.</p>
 		<img src="pictures/collaborateurs.png" style="height: 17em;" />
+		<footer>François, dév ops, supervise le développement.
+			Matthieu, product manager, documentation.
+			Proposer la conf de François pour ce qui est des spécificités REST (Hateoas, Json API, architecture) + point de vue client.
+		</footer>
 	</div></section>
 	<section class="slide cover"><div>
 		<h2>Projet : API et portail partenaire</h2>
 		<img src="pictures/portail-partenaire-doc.png">
 	</div></section>
 	<section class="slide"><div>
-		<h2>Projet : API et portail partenaire</h2>
+		<h2>Projet : API</h2>
 		<p>Nouvelle API Rest, données unifiées<br />
 
 			OAuth 2<br />
 
-			Proxy Nginx + scripts Lua (rate limit et authentification)<br />
-
-			Portail partenaire
+			Proxy Nginx + scripts Lua (rate limit et authentification)
 		</p>
+		<footer>Insister sur les spécificité d’un projet API
+			- Tests
+			- Qualité
+			- Impacts sur différents clients
+		</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Projet : portail partenaire</h2>
 		<p><img src="pictures/portail-partenaire-app.png" />
 		</p>
+		<footer>Gérer les utilisateurs de l’API
+			Création d’application, de tokens, association à des organisations et accès à la documentation
+		</footer>
 	</div></section>
 	<section class="slide cover"><div>
 		<h2>Organisation</h2>
 		<img src="pictures/aoshima-cat-island-japan.jpg ">
+		<footer>J'ai listé quelques points concernant l'organisation, peut être évident pour la plupart d'entre vous mais je n’avais pas ces habitude de travail. Elles font maintenant parti de mon quotidien.</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Organisation (1)</h2>
@@ -94,10 +108,15 @@
 
 			“Fix bug first”<br/>
 
-			Mise en production hebdomadaire<br/>
+			Mise en production hebdomadaire (et simple !)<br/>
 
 			Communication chat et VOIP
 		</p>
+		<footer>
+			Nouvelle méthodologie de travail, interactions fréquentes entre les développeurs et le responsable des features, points réguliers
+			Les mises en production hebdomadaire permettent de rajouter de la valeur au produit rapidement, j'ai connu des mises en production avec des scripts "à la main" et l'on croisait les doigts avant d'appuyer sur le bouton
+			Toute l’équipe est joignable tout le temps, très peu d’attente pour les dialogues, au revoir le mail !
+		</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Organisation (2)</h2>
@@ -115,6 +134,9 @@
 
 			<strong>Digital ocean</strong> : création de VM à la volée
 		</p>
+		<footer>revue de code : assure la qualité, évite des bugs et permet à l’ensemble de l’équipe de prendre la main sur le code produit
+		VM pour le build et les tests unitaires / fonctionnels
+		</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Workflow</h2>
@@ -132,6 +154,47 @@
 		<img src="pictures/architecture-api.png" style="height: 16em;" />
 	</div></section>
 	<section class="slide"><div>
+		<h2>Standard pour l'API</h2>
+		<p>API : JSON API<br />
+			Documentation : Swagger</p>
+
+		<p>
+			<strong>Autres</strong><br>
+			JSON-LD : schéma et lien<br />
+			Hydra : schéma et documentation directement dans la réponse</p>
+
+		<p>(voir <a href="https://github.com/dunglas/api-platform">https://github.com/dunglas/api-platform</a>)</p>
+	<footer>Kévin Dunglas à réalisé une conférence sur ces derniers format au dernier symfony live</footer>
+	</div></section>
+	<section class="slide"><div>
+		<h2>REST</h2>
+		<p>Basé sur le standard JSON Api :</p>
+
+		<ul>
+			<li>includes</li>
+			<li>fields</li>
+			<li>links</li>
+		</ul>
+
+		<p>semantic versionning (non défini dans le standard)</p>
+		<footer>Utilisation de https://github.com/willdurand/BazingaHateoasBundle pour les liens hypermédia</footer>
+	</div></section>
+	<section class="slide" id="documentation"><div>
+		<h2>Documentation</h2>
+		<img src="pictures/portail-partenaire-doc.png" />
+		<footer>Regroupement de la documentation pour toutes les API
+
+			Ajout de documentation markdown associé aux ressources
+
+			Sandbox plus complète (version api, type de client)
+		</footer>
+	</div></section>
+	<style>
+		#documentation img {
+			max-width: 104%;
+		}
+	</style>
+	<section class="slide"><div>
 		<h2>Openresty</h2>
 		<p>Nginx + modules<br />
 
@@ -141,6 +204,7 @@
 
 			Sous-requêtes
 		</p>
+		<footer>Proxy, gère les accès aux API, sous requête avec OAuth</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Scripts LUA</h2>
@@ -152,11 +216,11 @@
 
 			Interviennent à différents moments de la requête
 		</p>
+		<footer>Plutôt simple à appréhender, il faut traiter le serveur comme une application => tests</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Test des scripts LUA</h2>
 		<p class="nomargin">Testable via le package perl Test:Nginx<br />
-
 
 			<pre><code class="language-javascript">	--- http_config
 	lua_shared_dict cache 10M;
@@ -169,44 +233,12 @@
 	GET /test-401
 	--- error_code: 401</code></pre>
 
-
 			Difficulté de tester unitairement => tests fonctionnels
-
 		</p>
+		<footer>Difficulté de tester unitairement
+			Tests fonctionnels avec frisby par la suite
+		</footer>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Standard pour l'API</h2>
-		<p>API : JSON API<br />
-			Documentation : Swagger</p>
-
-		<p>
-			<strong>Autres</strong><br>
-			JSON-LD : schéma et lien<br />
-			Hydra : schéma et documentation directement dans la réponse</p>
-
-			<p>(voir <a href="https://github.com/dunglas/api-platform">https://github.com/dunglas/api-platform</a>)</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>REST</h2>
-		<p>Basé sur le standard JSON Api :</p>
-
-			<ul>
-				<li>includes</li>
-				<li>fields</li>
-				<li>links</li>
-			</ul>
-
-			<p>semantic versionning (non défini dans le standard)</p>
-	</div></section>
-	<section class="slide" id="documentation"><div>
-		<h2>Documentation</h2>
-		<img src="pictures/portail-partenaire-doc.png" />
-	</div></section>
-	<style>
-		#documentation img {
-			max-width: 104%;
-		}
-	</style>
 	<section class="slide" id="tests-fonctionnels"><div>
 		<h2>Tests fonctionnels</h2>
 		<p class="nomargin">SF2 (WebTestCase)<br>
@@ -227,6 +259,7 @@
 	.toss();
 });
 		</code></pre>
+		<footer>Vances Lucas : dotenv, librairie simple</footer>
 	</div></section>
 	<style>
 		#tests-fonctionnels pre code {
@@ -240,6 +273,7 @@
 		JMeter => tests de performance<br>
 
 		Blackfire</p>
+		<footer>Tsung, définition de phase avec augmentation du nombre d’utilisateurs sur le temps</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Bundles Symfony2</h2>
@@ -252,6 +286,9 @@
 			TESTS<br>
 			liip/functional-test-bundle
 		</p>
+		<footer>hateoas-bundle, répond aux problématique de performance mais peu maintenable (génération de code)
+		A voir avec le serializer SF2.7
+		</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Docker</h2>
@@ -291,6 +328,10 @@ tags:
 
 			<img src="pictures/logs.png" />
 		</p>
+		<footer>
+			Alerte avec les exceptions
+			Identification des types de client (mobile, tv…), de la charge
+		</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Clients actuels de l'API</h2>
@@ -331,6 +372,10 @@ tags:
 
 			Nouvelles méthodologies
 		</p>
+		<footer>
+			Responsabiliser les développeurs
+			Approche dev ops
+		</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Bilan projet</h2>
@@ -340,6 +385,14 @@ tags:
 
 			Choix des outils
 		</p>
+		<footer>Le métier étant connu, la gestion de projet est simplifié. Les problèmes ont été au niveau du développement, notamment problèmes de performances.
+
+			L'ensemble de ces outils a permis d'assurer un bon niveau de qualité de l'API, nous allons continuer à travailler pour Arte pour les futures évolutions.
+
+			L’extension de hateoas à répondu au problème mais n’est pas maintenable de par son mécanisme de génération de code. Cette partie va surement évoluer grâce aux récentes améliorations du serializer SF2.
+
+			Merci de votre attention, si vous avez des questions où discuter après la conférence, n’hésitez pas.
+		</footer>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Ressources</h2>
